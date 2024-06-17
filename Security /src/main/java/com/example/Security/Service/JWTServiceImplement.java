@@ -41,4 +41,11 @@ public class JWTServiceImplement {
     private Claims extractClaims(String token){
         return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
     }
+    public boolean isTokenValid(String token, UserDetails userDetails){
+        final String userName = extractUserName(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+    public boolean isTokenExpired(String token){
+        return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
 }
