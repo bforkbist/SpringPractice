@@ -9,15 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
 @Service
-public class JWTServiceImplement {
+public class JWTServiceImplement implements JWTService{
 
-    private String GeneratedToken(UserDetails userDetails){
+    public String generatedToken(UserDetails userDetails){
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -25,9 +23,10 @@ public class JWTServiceImplement {
                 .signWith(getSignInKey(), SignatureAlgorithm.ES256).compact();
     }
 
-    private String extractUserName(String token){
+    public String extractUserName(String token){
         return extractClaim(token,Claims::getSubject);
     }
+
 
     private <T> T extractClaim(String token, Function<Claims,T> claimResolvers){
         final Claims claims = extractClaims(token);
