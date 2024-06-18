@@ -15,7 +15,7 @@ import java.util.function.Function;
 @Service
 public class JWTServiceImplement implements JWTService{
 
-    public String generatedToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails){
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
